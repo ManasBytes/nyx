@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import AuthCard from "@/components/auth/AuthCard";
+import Button from "@/components/Button";
 import FormField from "@/components/auth/FormField";
 import { login } from "@/lib/auth";
 
@@ -29,16 +30,13 @@ export default function LoginPage() {
 
   return (
     <AuthCard
-      eyebrow="Welcome back"
+      eyebrow="Clearance Required"
       title="Sign in to your account"
-      description="Use your email address to continue."
+      description="Use your Officer ID or email to continue."
       footer={
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-on-surface-variant">
           Need an account?{" "}
-          <Link
-            href="/signup"
-            className="font-medium text-indigo-600 dark:text-indigo-400"
-          >
+          <Link href="/signup" className="font-medium text-primary">
             Sign up
           </Link>
         </p>
@@ -46,31 +44,35 @@ export default function LoginPage() {
     >
       <form onSubmit={submit} className="grid gap-4">
         <FormField
-          label="Email address"
+          label="Officer ID or Email"
+          icon="badge"
           name="email"
-          type="email"
-          autoComplete="email"
+          type="text"
+          autoComplete="username"
           required
         />
         <FormField
           label="Password"
+          icon="lock"
           name="password"
           type="password"
           autoComplete="current-password"
           required
         />
         {error && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+          <p role="alert" className="text-sm text-error">
             {error}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={pending}
-          className="mt-2 rounded-lg bg-indigo-600 py-2.5 font-semibold text-white transition-colors hover:bg-indigo-500 disabled:opacity-60"
+        <Button
+          action="submit"
+          className="mt-2 w-full"
+          pending={pending}
+          pendingLabel="Signing in…"
+          variant="warning"
         >
-          {pending ? "Signing in…" : "Sign in"}
-        </button>
+          Sign in
+        </Button>
       </form>
     </AuthCard>
   );

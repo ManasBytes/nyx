@@ -14,17 +14,28 @@ export default function AuthCard({
   footer: ReactNode;
 }) {
   return (
-    <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-zinc-50 p-6 dark:bg-black">
-      <section className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-10 shadow-xl dark:border-zinc-800 dark:bg-zinc-950">
-        <p className="text-sm font-bold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
-          {eyebrow}
-        </p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+    <main className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden px-4 py-8">
+      <div className="pointer-events-none absolute inset-0 opacity-20">
+        <div className="absolute -top-40 left-1/2 h-[360px] w-[720px] -translate-x-1/2   bg-primary/20 blur-[130px]" />
+        <div className="absolute -bottom-32 left-1/2 h-[280px] w-[600px] -translate-x-1/2   bg-secondary/10 blur-[140px]" />
+      </div>
+      <section className="relative w-full max-w-md rounded-2xl border border-outline-variant/80 bg-surface-container-low/90 p-7 shadow-[0_20px_60px_rgba(0,0,0,0.65)] backdrop-blur-xl">
+        <div className="mb-5 flex items-center justify-between border-b border-outline-variant/80 pb-5">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5   bg-primary" />
+            <span className="font-mono text-[11px] font-semibold tracking-wider text-primary/90 uppercase">
+              {eyebrow}
+            </span>
+          </div>
+        </div>
+        <h1 className="text-2xl font-semibold tracking-tight text-white">
           {title}
         </h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">{description}</p>
-        <div className="mt-7 grid gap-4">{children}</div>
-        <div className="mt-5">{footer}</div>
+        <p className="mt-2 text-sm text-on-surface-variant">{description}</p>
+        <div className="mt-6 grid gap-4">{children}</div>
+        <div className="mt-6 border-t border-outline-variant/80 pt-4 text-center">
+          {footer}
+        </div>
       </section>
     </main>
   );

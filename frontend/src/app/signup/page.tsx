@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import AuthCard from "@/components/auth/AuthCard";
+import Button from "@/components/Button";
 import FormField from "@/components/auth/FormField";
 import { signup } from "@/lib/auth";
 
@@ -34,16 +35,13 @@ export default function SignupPage() {
 
   return (
     <AuthCard
-      eyebrow="Get started"
+      eyebrow="Request Access"
       title="Create your account"
       description="Use your email address to continue."
       footer={
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-on-surface-variant">
           Already have an account?{" "}
-          <Link
-            href="/login"
-            className="font-medium text-indigo-600 dark:text-indigo-400"
-          >
+          <Link href="/login" className="font-medium text-primary">
             Sign in
           </Link>
         </p>
@@ -64,6 +62,7 @@ export default function SignupPage() {
         </div>
         <FormField
           label="Email address"
+          icon="mail"
           name="email"
           type="email"
           autoComplete="email"
@@ -71,6 +70,7 @@ export default function SignupPage() {
         />
         <FormField
           label="Password"
+          icon="lock"
           name="password"
           type="password"
           autoComplete="new-password"
@@ -78,17 +78,19 @@ export default function SignupPage() {
           required
         />
         {error && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+          <p role="alert" className="text-sm text-error">
             {error}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={pending}
-          className="mt-2 rounded-lg bg-indigo-600 py-2.5 font-semibold text-white transition-colors hover:bg-indigo-500 disabled:opacity-60"
+        <Button
+          action="submit"
+          className="mt-2 w-full"
+          pending={pending}
+          pendingLabel="Creating account…"
+          variant="success"
         >
-          {pending ? "Creating account…" : "Create account"}
-        </button>
+          Create account
+        </Button>
       </form>
     </AuthCard>
   );
