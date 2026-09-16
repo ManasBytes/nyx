@@ -3,11 +3,11 @@ skills
 __pycache__/
 *.py[codz]
 *$py.class
-
+flow.md
 # C extensions
 *.so
 AGENTS.md
-
+plan1_auth.md
 # Distribution / packaging
 .Python
 build/
