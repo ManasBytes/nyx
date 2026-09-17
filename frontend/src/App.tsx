@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/lib/auth-provider'
 import { RequireAuth } from '@/lib/require-auth'
-import { HomePage } from '@/pages/HomePage'
+import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupPage } from '@/pages/SignupPage'
 
@@ -16,7 +16,7 @@ function App() {
             path="/"
             element={
               <RequireAuth>
-                <HomePage />
+                <DashboardPage />
               </RequireAuth>
             }
           />
