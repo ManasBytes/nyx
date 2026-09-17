@@ -29,10 +29,22 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    PENDING = "pending"
+    ACTIVE = "active"
+    SUSPENDED = "suspended"
+    STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (ACTIVE, "Active"),
+        (SUSPENDED, "Suspended"),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
+    # A pending user can still log in (they need to, to submit their first
+    # access request) - only "suspended" blocks login. See EmailTokenObtainPairSerializer.
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
