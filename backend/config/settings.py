@@ -13,8 +13,12 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+from psycopg.conninfo import conninfo_to_dict
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,7 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "api",
-    "authentication",
+    "api.authentication",
+    "api.roles",
 ]
 
 MIDDLEWARE = [
@@ -76,14 +81,24 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
+connection_string = os.getenv("CONNECTION_STRING")
+connection = conninfo_to_dict(connection_string) if connection_string else {}
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "nyx_db"),
-        "USER": os.getenv("POSTGRES_USER", "nyx_user"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "nyx_password"),
-        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-        "PORT": os.getenv("POSTGRES_PORT", "7778"),
+        "NAME": connection.get("dbname", os.getenv("POSTGRES_DB", "nyx_db")),
+        "USER": connection.get("user", os.getenv("POSTGRES_USER", "nyx_user")),
+        "PASSWORD": connection.get(
+            "password", os.getenv("POSTGRES_PASSWORD", "nyx_password")
+        ),
+        "HOST": connection.get("host", os.getenv("POSTGRES_HOST", "localhost")),
+        "PORT": connection.get("port", os.getenv("POSTGRES_PORT", "7778")),
+        "OPTIONS": (
+            {"sslmode": connection.get("sslmode", "require")}
+            if connection_string
+            else {}
+        ),
     }
 }
 
