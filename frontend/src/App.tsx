@@ -1,10 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/lib/auth-provider'
 import { RequireAuth } from '@/lib/require-auth'
-import { ApprovalsPage } from '@/pages/ApprovalsPage'
-import { HomePage } from '@/pages/HomePage'
+import { DashboardPage } from '@/pages/dashboard/DashboardPage'
+import { ComponentsPage } from '@/pages/components/ComponentsPage'
+import { DspDashboardPage } from '@/pages/dsp/DspDashboardPage'
 import { LoginPage } from '@/pages/LoginPage'
-import { RequestAccessPage } from '@/pages/RequestAccessPage'
 import { SignupPage } from '@/pages/SignupPage'
 
 function App() {
@@ -18,26 +18,19 @@ function App() {
             path="/"
             element={
               <RequireAuth>
-                <HomePage />
+                <DashboardPage />
               </RequireAuth>
             }
           />
           <Route
-            path="/request-access"
+            path="/dsp"
             element={
               <RequireAuth>
-                <RequestAccessPage />
+                <DspDashboardPage />
               </RequireAuth>
             }
           />
-          <Route
-            path="/approvals"
-            element={
-              <RequireAuth>
-                <ApprovalsPage />
-              </RequireAuth>
-            }
-          />
+          <Route path="/components" element={<ComponentsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
