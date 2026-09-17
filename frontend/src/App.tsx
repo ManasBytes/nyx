@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/lib/auth-provider'
 import { RequireAuth } from '@/lib/require-auth'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
+import { DspDashboardPage } from '@/pages/dsp/DspDashboardPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupPage } from '@/pages/SignupPage'
 
@@ -17,6 +18,14 @@ function App() {
             element={
               <RequireAuth>
                 <DashboardPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/dsp"
+            element={
+              <RequireAuth>
+                <DspDashboardPage />
               </RequireAuth>
             }
           />
