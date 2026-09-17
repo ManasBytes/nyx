@@ -4,16 +4,19 @@ import { RequireAuth } from '@/lib/require-auth'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { ComponentsPage } from '@/pages/components/ComponentsPage'
 import { DspDashboardPage } from '@/pages/dsp/DspDashboardPage'
-import { LoginPage } from '@/pages/LoginPage'
-import { SignupPage } from '@/pages/SignupPage'
+import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage'
+import { SignInPage } from '@/pages/auth/SignInPage'
+import { SignUpPage } from '@/pages/auth/SignUpPage'
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route
             path="/"
             element={
