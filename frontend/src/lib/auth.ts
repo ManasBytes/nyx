@@ -33,6 +33,11 @@ export async function signup(data: {
   password: string
   first_name: string
   last_name: string
+  requested_role: number
+  state: number
+  district?: number
+  zone?: number
+  city?: number
 }) {
   const response = await fetch('/api/auth/signup/', {
     method: 'POST',

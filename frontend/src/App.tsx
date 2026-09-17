@@ -1,8 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/lib/auth-provider'
 import { RequireAuth } from '@/lib/require-auth'
+import { ApprovalsPage } from '@/pages/ApprovalsPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
+import { RequestAccessPage } from '@/pages/RequestAccessPage'
 import { SignupPage } from '@/pages/SignupPage'
 
 function App() {
@@ -17,6 +19,22 @@ function App() {
             element={
               <RequireAuth>
                 <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/request-access"
+            element={
+              <RequireAuth>
+                <RequestAccessPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/approvals"
+            element={
+              <RequireAuth>
+                <ApprovalsPage />
               </RequireAuth>
             }
           />
