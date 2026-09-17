@@ -2,6 +2,7 @@ import { Bell, LayoutDashboard, Shapes, ShieldUser } from 'lucide-react'
 import { AppHeader, AppShell, AppSidebar, HeaderActions, type NavGroup } from '@/components/nyx'
 import { useAuth } from '@/hooks/useAuth'
 import { STATION } from '@/lib/dashboard-data'
+import { AuthSpecimens } from './AuthSpecimens'
 import { DspSpecimens } from './DspSpecimens'
 import { InspectorSpecimens } from './InspectorSpecimens'
 import { ShellSpecimens } from './ShellSpecimens'
@@ -47,6 +48,7 @@ export function ComponentsPage() {
         <ShellSpecimens />
         <InspectorSpecimens />
         <DspSpecimens />
+        <AuthSpecimens />
       </div>
     </AppShell>
   )
