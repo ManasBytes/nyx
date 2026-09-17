@@ -1,16 +1,16 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: init-repo-postgres
+    container_name: nyx-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: app_db
-      POSTGRES_USER: app_user
-      POSTGRES_PASSWORD: app_password
+      POSTGRES_DB: nyx_db
+      POSTGRES_USER: nyx_user
+      POSTGRES_PASSWORD: nyx_password
     ports:
-      - "7777:5432"
+      - "7778:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - nyx_postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  nyx_postgres_data:
