@@ -13,6 +13,18 @@ export function JurisdictionFields({
 
   return (
     <>
+      {fields.includes('state') ? (
+        <SelectField
+          id="state"
+          name="state"
+          label="State"
+          options={jurisdiction.states}
+          value={value.state}
+          onChange={(event) => select('state', event.target.value)}
+          placeholder="Select state…"
+          required
+        />
+      ) : null}
       {fields.includes('district') ? (
         <SelectField
           id="district"

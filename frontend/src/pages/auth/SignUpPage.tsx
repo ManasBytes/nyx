@@ -92,13 +92,13 @@ export function SignUpPage() {
           minLength={8}
           required
         />
-        {error ? <FormAlert tone="error">{error}</FormAlert> : null}
+        {error || jurisdiction.error ? <FormAlert tone="error">{error || jurisdiction.error}</FormAlert> : null}
         <Button
           type="submit"
           variant="primary-container"
           size="lg"
           className="w-full font-semibold"
-          disabled={pending}
+          disabled={pending || jurisdiction.isLoading}
         >
           <UserPlus />
           {pending ? 'Submitting request…' : 'Request access'}

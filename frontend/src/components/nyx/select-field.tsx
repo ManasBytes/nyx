@@ -2,6 +2,8 @@ import type { ComponentProps } from 'react'
 import { cn } from 'cn'
 import { Label } from '@/components/ui/label'
 
+type Option = { value: string; label: string }
+
 export function SelectField({
   id,
   label,
@@ -9,7 +11,7 @@ export function SelectField({
   placeholder = 'Select…',
   className,
   ...props
-}: ComponentProps<'select'> & { id: string; label: string; options: string[]; placeholder?: string }) {
+}: ComponentProps<'select'> & { id: string; label: string; options: Option[] | string[]; placeholder?: string }) {
   return (
     <div className="flex flex-col gap-space-xs">
       <Label htmlFor={id} className="font-mono text-label-sm tracking-wider text-outline uppercase">
@@ -24,11 +26,15 @@ export function SelectField({
         {...props}
       >
         <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
+        {options.map((option) => {
+          const value = typeof option === 'string' ? option : option.value
+          const label = typeof option === 'string' ? option : option.label
+          return (
+          <option key={value} value={value}>
+            {label}
           </option>
-        ))}
+          )
+        })}
       </select>
     </div>
   )

@@ -81,6 +81,10 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         if not self.user or not self.user.is_active:
             self.fail("no_active_account")
 
+        if self.user.status == User.PENDING:
+            raise serializers.ValidationError(
+                "Your access request is still pending approval."
+            )
         if self.user.status == User.SUSPENDED:
             raise serializers.ValidationError("This account has been suspended.")
 

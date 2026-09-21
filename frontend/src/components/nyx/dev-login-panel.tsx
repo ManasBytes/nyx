@@ -2,7 +2,13 @@ import { Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DEV_LOGINS, type DevLogin } from '@/lib/roles'
 
-export function DevLoginPanel({ onSelect }: { onSelect: (login: DevLogin) => void }) {
+export function DevLoginPanel({
+  onSelect,
+  disabled,
+}: {
+  onSelect: (login: DevLogin) => void
+  disabled?: boolean
+}) {
   return (
     <div className="mt-space-lg flex flex-col gap-space-sm rounded bg-surface-container-lowest p-space-md">
       <div className="flex items-center gap-space-xs">
@@ -19,6 +25,7 @@ export function DevLoginPanel({ onSelect }: { onSelect: (login: DevLogin) => voi
             variant="surface"
             className="text-title-sm"
             onClick={() => onSelect(login)}
+            disabled={disabled}
           >
             {login.label}
           </Button>

@@ -3,6 +3,7 @@ from rest_framework.exceptions import ValidationError
 
 from api.authentication.models import User
 
+from .approval_mail import notify_request_approved, notify_request_submitted
 from .authz import require_approver_or_superadmin
 from .models import AccessRequest, Role, UserAssignment
 
@@ -66,12 +67,14 @@ def submit_access_request(user, role, jurisdiction):
 
     validate_jurisdiction(role, jurisdiction)
     approver = resolve_approver(role, jurisdiction)
-    return AccessRequest.objects.create(
+    access_request = AccessRequest.objects.create(
         user=user,
         requested_role=role,
         approver_user=approver,
         **jurisdiction,
     )
+    notify_request_submitted(access_request)
+    return access_request
 
 
 @require_approver_or_superadmin
@@ -103,6 +106,7 @@ def approve_access_request(access_request, acting_user):
     access_request.user.status = User.ACTIVE
     access_request.user.save(update_fields=["status"])
 
+    notify_request_approved(access_request)
     return assignment
 
 

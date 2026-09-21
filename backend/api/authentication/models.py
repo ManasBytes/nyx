@@ -42,8 +42,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
-    # A pending user can still log in (they need to, to submit their first
-    # access request) - only "suspended" blocks login. See EmailTokenObtainPairSerializer.
+    # Signup submits the access request in the same call, so a user never
+    # needs to log in while pending - only "active" (an approved request)
+    # may log in. See EmailTokenObtainPairSerializer.
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

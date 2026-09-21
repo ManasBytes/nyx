@@ -4,7 +4,7 @@ UV_RUN := UV_CACHE_DIR=/tmp/init-repo-uv-cache uv run
 .PHONY: help check check-backend check-frontend lint lint-backend lint-frontend \
 	format format-backend format-frontend format-check format-check-backend \
 	format-check-frontend build build-backend build-frontend run run-backend \
-	run-frontend migrate backend frontend
+	run-frontend migrate worker backend frontend
 
 help:
 	@printf '%s\n' \
@@ -18,7 +18,8 @@ help:
 		'  make format-check          Verify formatting in both applications' \
 		'  make build                 Build frontend and validate backend compilation' \
 		'  make run                   Start backend and frontend concurrently' \
-		'  make migrate               Apply Django migrations (PostgreSQL must be running)'
+		'  make migrate               Apply Django migrations (PostgreSQL must be running)' \
+		'  make worker                Start the Celery email worker'
 
 check: check-backend check-frontend
 
@@ -29,7 +30,7 @@ check-frontend: lint-frontend format-check-frontend
 lint: lint-backend lint-frontend
 
 lint-backend:
-	cd backend && $(UV_RUN) ruff check config api authentication manage.py
+	cd backend && $(UV_RUN) ruff check config api manage.py
 
 lint-frontend:
 	cd frontend && npm run lint
@@ -37,7 +38,7 @@ lint-frontend:
 format: format-backend format-frontend
 
 format-backend:
-	cd backend && $(UV_RUN) black --workers 1 config api authentication manage.py
+	cd backend && $(UV_RUN) black --workers 1 config api manage.py
 
 format-frontend:
 	cd frontend && npm run format
@@ -45,7 +46,7 @@ format-frontend:
 format-check: format-check-backend format-check-frontend
 
 format-check-backend:
-	cd backend && $(UV_RUN) black --check --workers 1 config api authentication manage.py
+	cd backend && $(UV_RUN) black --check --workers 1 config api manage.py
 
 format-check-frontend:
 	cd frontend && npm run format:check
@@ -53,7 +54,7 @@ format-check-frontend:
 build: build-backend build-frontend
 
 build-backend:
-	cd backend && $(UV_RUN) python -m compileall -q config api authentication
+	cd backend && $(UV_RUN) python -m compileall -q config api
 
 build-frontend:
 	cd frontend && npm run build
@@ -69,6 +70,9 @@ run-frontend:
 
 migrate:
 	cd backend && $(UV_RUN) python manage.py migrate
+
+worker:
+	cd backend && $(UV_RUN) celery -A config worker --loglevel=info
 
 # Convenience aliases: `make backend` and `make frontend` run focused checks.
 backend: check-backend

@@ -4,5 +4,6 @@ import { AuthContext } from '@/lib/auth-context'
 
 export function RequireAuth({ children }: { children: ReactNode }) {
   const context = useContext(AuthContext)
+  if (context?.isLoading) return null
   return context?.isAuthenticated ? children : <Navigate to="/login" replace />
 }

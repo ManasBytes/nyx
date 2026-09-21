@@ -2,7 +2,7 @@ import { BadgeCheck, ShieldUser, Star, type LucideIcon } from 'lucide-react'
 
 export type Role = 'cp' | 'dsp' | 'inspector' | 'dgp' | 'superadmin'
 
-export type JurisdictionField = 'district' | 'zone' | 'city'
+export type JurisdictionField = 'state' | 'district' | 'zone' | 'city'
 
 export type RoleOption = {
   id: Role
@@ -20,7 +20,7 @@ export const ROLES: RoleOption[] = [
     icon: Star,
     home: '/dsp',
     approver: 'DGP',
-    fields: ['district'],
+    fields: ['state', 'district'],
   },
   {
     id: 'dsp',
@@ -28,7 +28,7 @@ export const ROLES: RoleOption[] = [
     icon: ShieldUser,
     home: '/dsp',
     approver: 'CP',
-    fields: ['district', 'zone'],
+    fields: ['state', 'district', 'zone'],
   },
   {
     id: 'inspector',
@@ -36,7 +36,7 @@ export const ROLES: RoleOption[] = [
     icon: BadgeCheck,
     home: '/',
     approver: 'DSP',
-    fields: ['district', 'zone', 'city'],
+    fields: ['state', 'district', 'zone', 'city'],
   },
 ]
 

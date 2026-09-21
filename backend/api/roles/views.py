@@ -72,9 +72,11 @@ class MyAssignmentView(generics.GenericAPIView):
     serializer_class = UserAssignmentSerializer
 
     def get(self, request):
-        assignment = UserAssignment.objects.filter(
-            user=request.user, is_active=True
-        ).first()
+        assignment = (
+            UserAssignment.objects.filter(user=request.user, is_active=True)
+            .select_related("role", "state", "district", "zone", "city")
+            .first()
+        )
         if not assignment:
             return Response(None)
         return Response(self.get_serializer(assignment).data)
@@ -100,12 +102,25 @@ class AccessRequestCreateView(generics.GenericAPIView):
         return Response(AccessRequestSerializer(access_request).data, status=201)
 
 
+ACCESS_REQUEST_RELATED = (
+    "user",
+    "requested_role",
+    "state",
+    "district",
+    "zone",
+    "city",
+    "approver_user",
+)
+
+
 class MyAccessRequestsView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = AccessRequestSerializer
 
     def get_queryset(self):
-        return AccessRequest.objects.filter(user=self.request.user)
+        return AccessRequest.objects.filter(user=self.request.user).select_related(
+            *ACCESS_REQUEST_RELATED
+        )
 
 
 class PendingApprovalsView(generics.ListAPIView):
@@ -113,7 +128,9 @@ class PendingApprovalsView(generics.ListAPIView):
     serializer_class = AccessRequestSerializer
 
     def get_queryset(self):
-        queryset = AccessRequest.objects.filter(status=AccessRequest.PENDING)
+        queryset = AccessRequest.objects.filter(
+            status=AccessRequest.PENDING
+        ).select_related(*ACCESS_REQUEST_RELATED)
         if is_superadmin(self.request.user):
             return queryset
         return queryset.filter(approver_user=self.request.user)
@@ -121,7 +138,7 @@ class PendingApprovalsView(generics.ListAPIView):
 
 class ApproveAccessRequestView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated, IsAccessRequestApprover]
-    queryset = AccessRequest.objects.all()
+    queryset = AccessRequest.objects.select_related(*ACCESS_REQUEST_RELATED)
 
     def post(self, request, pk):
         access_request = self.get_object()
@@ -131,7 +148,7 @@ class ApproveAccessRequestView(generics.GenericAPIView):
 
 class RejectAccessRequestView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated, IsAccessRequestApprover]
-    queryset = AccessRequest.objects.all()
+    queryset = AccessRequest.objects.select_related(*ACCESS_REQUEST_RELATED)
 
     def post(self, request, pk):
         access_request = self.get_object()
