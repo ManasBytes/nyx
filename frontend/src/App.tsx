@@ -1,9 +1,13 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/lib/auth-provider'
-import { RequireAuth } from '@/lib/require-auth'
-import { DashboardPage } from '@/pages/dashboard/DashboardPage'
+import { LevelHome } from '@/lib/level-home'
+import { RequireLevel } from '@/lib/require-level'
+import { LEVEL_IDS, levelPath } from '@/lib/levels'
 import { ComponentsPage } from '@/pages/components/ComponentsPage'
-import { DspDashboardPage } from '@/pages/dsp/DspDashboardPage'
+import { LevelDashboardPage } from '@/pages/levels/LevelDashboardPage'
+import { NoWorkspacePage } from '@/pages/levels/NoWorkspacePage'
+import { StationDataPage } from '@/pages/manage/StationDataPage'
+import { ZoneDataPage } from '@/pages/manage/ZoneDataPage'
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage'
 import { SignInPage } from '@/pages/auth/SignInPage'
 import { SignUpPage } from '@/pages/auth/SignUpPage'
@@ -17,22 +21,38 @@ function App() {
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/" element={<LevelHome />} />
+          <Route path="/no-workspace" element={<NoWorkspacePage />} />
+          {LEVEL_IDS.map((level) => (
+            <Route
+              key={level}
+              path={levelPath(level)}
+              element={
+                <RequireLevel level={level}>
+                  <LevelDashboardPage level={level} />
+                </RequireLevel>
+              }
+            />
+          ))}
           <Route
-            path="/"
+            path="/level5/records"
             element={
-              <RequireAuth>
-                <DashboardPage />
-              </RequireAuth>
+              <RequireLevel level={5}>
+                <StationDataPage />
+              </RequireLevel>
             }
           />
           <Route
-            path="/dsp"
+            path="/level4/records"
             element={
-              <RequireAuth>
-                <DspDashboardPage />
-              </RequireAuth>
+              <RequireLevel level={4}>
+                <ZoneDataPage />
+              </RequireLevel>
             }
           />
+          <Route path="/records" element={<Navigate to="/level5/records" replace />} />
+          <Route path="/dsp/records" element={<Navigate to="/level4/records" replace />} />
+          <Route path="/dsp" element={<Navigate to="/" replace />} />
           <Route path="/components" element={<ComponentsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

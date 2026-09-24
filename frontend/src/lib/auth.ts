@@ -4,6 +4,8 @@ const ACCESS_TOKEN_KEY = 'nyx_access_token'
 const REFRESH_TOKEN_KEY = 'nyx_refresh_token'
 const EMAIL_KEY = 'nyx_user_email'
 const ROLE_KEY = 'nyx_user_role'
+const LEVEL_KEY = 'nyx_user_level'
+const SCOPE_KEY = 'nyx_user_scope'
 
 export function getAccessToken() {
   return localStorage.getItem(ACCESS_TOKEN_KEY)
@@ -25,6 +27,15 @@ export function setUserRole(role: string) {
   localStorage.setItem(ROLE_KEY, role)
 }
 
+export function getUserLevel() {
+  const level = localStorage.getItem(LEVEL_KEY)
+  return level ? Number(level) : null
+}
+
+export function getUserScope() {
+  return localStorage.getItem(SCOPE_KEY)
+}
+
 export function setSession(access: string, refresh: string, email: string) {
   localStorage.setItem(ACCESS_TOKEN_KEY, access)
   localStorage.setItem(REFRESH_TOKEN_KEY, refresh)
@@ -36,6 +47,8 @@ export function clearTokens() {
   localStorage.removeItem(REFRESH_TOKEN_KEY)
   localStorage.removeItem(EMAIL_KEY)
   localStorage.removeItem(ROLE_KEY)
+  localStorage.removeItem(LEVEL_KEY)
+  localStorage.removeItem(SCOPE_KEY)
 }
 
 async function parseError(response: Response) {
@@ -119,4 +132,9 @@ async function setAssignmentRole() {
   const assignment = await response.json()
   if (!assignment?.role?.name) throw new Error('No active role assignment was found.')
   setUserRole(assignment.role.name)
+  localStorage.setItem(LEVEL_KEY, String(assignment.role.level))
+  const scope = [assignment.city, assignment.zone, assignment.district, assignment.state]
+    .filter(Boolean)
+    .join(' • ')
+  localStorage.setItem(SCOPE_KEY, scope)
 }
