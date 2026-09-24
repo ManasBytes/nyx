@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { Bell, Building2, FileCheck, FolderOpen } from 'lucide-react'
+import { Bell, Building2, FileCheck, FolderOpen, Radar } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
+  EmptyState,
   EntityChip,
+  ModuleCard,
   FilterTabs,
   HeaderActions,
   PanelHeader,
@@ -17,7 +19,7 @@ import {
 } from '@/components/nyx'
 import { DSP } from '@/lib/dsp-dashboard-data'
 import { ENTITY_FILTERS, INCIDENT_TABS, STATION } from '@/lib/dashboard-data'
-import { DSP_NAV } from '@/lib/dsp-nav-items'
+import { LEVELS } from '@/lib/levels'
 import { Specimen, SpecimenGroup } from './Specimen'
 
 const TONES = ['primary', 'secondary', 'tertiary', 'error', 'neutral', 'outline'] as const
@@ -31,14 +33,21 @@ export function ShellSpecimens() {
         <p className="text-body-sm text-on-surface-variant">
           The sidebar, topbar, search field and user chip framing this page are those components.
           Compare the DSP configuration (grouped nav, clearance chip, profile footer) at{' '}
-          <code className="font-mono text-primary">/dsp</code>.
+          <code className="font-mono text-primary">/dsp/records</code>.
         </p>
       </Specimen>
-      <Specimen name="SidebarNavItem" note="active state via NavLink">
-        <div className="w-72 rounded bg-surface-container-lowest p-space-sm">
-          {DSP_NAV[1].items.map((item) => (
-            <SidebarNavItem key={item.id} item={item} />
-          ))}
+      <Specimen name="SidebarNavItem" note="linked, unbuilt (greyed) and collapsed states">
+        <div className="flex gap-space-md">
+          <div className="w-72 rounded bg-surface-container-lowest p-space-sm">
+            {LEVELS[4].nav[1].items.map((item) => (
+              <SidebarNavItem key={item.id} item={item} />
+            ))}
+          </div>
+          <div className="w-14 rounded bg-surface-container-lowest p-space-xs">
+            {LEVELS[4].nav[1].items.map((item) => (
+              <SidebarNavItem key={item.id} item={item} collapsed />
+            ))}
+          </div>
         </div>
       </Specimen>
       <Specimen name="SidebarStatus / SidebarProfile" note="sidebar footers">
@@ -66,6 +75,21 @@ export function ShellSpecimens() {
             ]}
           />
           <UserChip user={STATION.officer} onSignOut={() => {}} />
+        </div>
+      </Specimen>
+      <Specimen name="EmptyState" note="module placeholder and 404 body">
+        <EmptyState
+          icon={Radar}
+          eyebrow="Intelligence • Level 4"
+          title="Intelligence Search"
+          description="Scoped and routed, but the module itself is not built yet."
+        />
+      </Specimen>
+      <Specimen name="ModuleCard" note="planned workspace module, per level">
+        <div className="grid grid-cols-1 gap-space-sm sm:grid-cols-3">
+          {LEVELS[4].nav[1].items.slice(0, 3).map((item) => (
+            <ModuleCard key={item.id} icon={item.icon} label={item.label} group="Casework" />
+          ))}
         </div>
       </Specimen>
       <Specimen name="SearchField" note="shared by topbar, records filter and RAG search">

@@ -14,8 +14,8 @@ const GALLERY_NAV: NavGroup[] = [
     id: 'surfaces',
     label: 'Surfaces',
     items: [
-      { id: 'inspector', label: 'Inspector Dashboard', icon: LayoutDashboard, to: '/' },
-      { id: 'dsp', label: 'DSP Dashboard', icon: ShieldUser, to: '/dsp' },
+      { id: 'level5', label: 'Level 5 Dashboard', icon: LayoutDashboard, to: '/level5/dashboard' },
+      { id: 'level4', label: 'Level 4 Dashboard', icon: ShieldUser, to: '/level4/dashboard' },
       { id: 'components', label: 'Component Library', icon: Shapes, to: '/components' },
     ],
   },

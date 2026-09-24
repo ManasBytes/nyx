@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { ExternalLink, FolderCog, ScanSearch } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,7 @@ export function StationRecordsPanel({
   categories,
   totalCount,
   updatedToday,
+  header,
   onOpenRecords,
   onOpenCategory,
   onLogNew,
@@ -18,6 +20,7 @@ export function StationRecordsPanel({
   categories: RecordCategory[]
   totalCount: string
   updatedToday: number
+  header?: ReactNode
   onOpenRecords?: () => void
   onOpenCategory?: (id: string) => void
   onLogNew?: (id: string) => void
@@ -25,6 +28,7 @@ export function StationRecordsPanel({
 }) {
   return (
     <SectionCard>
+      {header ?? (
       <SectionHeader
         icon={FolderCog}
         iconClassName="text-tertiary"
@@ -38,6 +42,7 @@ export function StationRecordsPanel({
           </Button>
         }
       />
+      )}
       <div className="mb-space-md">
         <SearchField
           icon={ScanSearch}

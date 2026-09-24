@@ -2,7 +2,13 @@ import {
   AudioLines,
   BadgeCheck,
   Building2,
+  Car,
   CircleAlert,
+  FileWarning,
+  FlaskConical,
+  Package,
+  UserSearch,
+  UserX,
   FileText,
   Forward,
   Landmark,
@@ -15,6 +21,7 @@ import {
 } from 'lucide-react'
 import type {
   DirectCase,
+  RecordCategory,
   EvidenceAsset,
   FlaggedCase,
   MetricStat,
@@ -376,6 +383,17 @@ export const ZONAL_WANTED: WantedPerson[] = [
       { label: 'Flight Risk', tone: 'outline' },
     ],
   },
+]
+
+export const ZONE_RECORD_CATEGORIES: RecordCategory[] = [
+  { id: 'incidents', label: 'Incidents', count: 1142, icon: FileWarning, tone: 'primary' },
+  { id: 'firs', label: 'FIR Records', count: 3418, icon: FileText, tone: 'tertiary' },
+  { id: 'persons', label: 'Persons of Int.', count: 2260, icon: UserSearch, tone: 'secondary' },
+  { id: 'vehicles', label: 'Vehicles', count: 1394, icon: Car, tone: 'neutral' },
+  { id: 'missing', label: 'Missing Pers.', count: 128, icon: UserX, tone: 'error' },
+  { id: 'wanted', label: 'Wanted Persons', count: 96, icon: TriangleAlert, tone: 'error' },
+  { id: 'seized', label: 'Seized Assets', count: 612, icon: Package, tone: 'neutral' },
+  { id: 'evidence', label: 'Station Evid.', count: 792, icon: FlaskConical, tone: 'tertiary' },
 ]
 
 export const INTEL_AGENCIES = [

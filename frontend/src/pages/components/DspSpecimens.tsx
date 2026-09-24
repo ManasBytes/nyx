@@ -19,6 +19,9 @@ import {
   StationCommandRow,
   ThreatAlertCard,
   ThreatAlertsPanel,
+  UploadDropzone,
+  UploadQueueRow,
+  DataScopeBar,
   WantedPersonCard,
 } from '@/components/nyx'
 import {
@@ -108,6 +111,23 @@ export function DspSpecimens() {
             activeCount={ZONAL_WANTED.length}
             showViewAll={false}
             header={<PanelHeader tone="error" round title="Zonal Most Wanted" />}
+          />
+        </div>
+      </Specimen>
+      <Specimen name="DataScopeBar" note="zone scope with station delegation">
+        <DataScopeBar
+          scopeKind="Zone scope"
+          scopeLabel="DSP Zone — Chennai Central"
+          stations={STATIONS.map((station) => station.name)}
+          station={STATIONS[0].name}
+          delegate={STATIONS[0].sho}
+        />
+      </Specimen>
+      <Specimen name="UploadDropzone / UploadQueueRow" note="staging files locally">
+        <div className="flex flex-col gap-space-md">
+          <UploadDropzone hint="CCTV, CDR sheets, seizure photos, forensic PDFs" onFiles={() => {}} />
+          <UploadQueueRow
+            upload={{ id: 'demo', name: 'CCTV_Harbor_Gate4_Night.mp4', size: 48_234_496, status: 'Staged' }}
           />
         </div>
       </Specimen>
