@@ -5,7 +5,9 @@ import { RequireLevel } from '@/lib/require-level'
 import { LEVEL_IDS, levelPath } from '@/lib/levels'
 import { ComponentsPage } from '@/pages/components/ComponentsPage'
 import { LevelDashboardPage } from '@/pages/levels/LevelDashboardPage'
+import { LevelSectionPage } from '@/pages/levels/LevelSectionPage'
 import { NoWorkspacePage } from '@/pages/levels/NoWorkspacePage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
 import { StationDataPage } from '@/pages/manage/StationDataPage'
 import { ZoneDataPage } from '@/pages/manage/ZoneDataPage'
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage'
@@ -24,15 +26,24 @@ function App() {
           <Route path="/" element={<LevelHome />} />
           <Route path="/no-workspace" element={<NoWorkspacePage />} />
           {LEVEL_IDS.map((level) => (
-            <Route
-              key={level}
-              path={levelPath(level)}
-              element={
-                <RequireLevel level={level}>
-                  <LevelDashboardPage level={level} />
-                </RequireLevel>
-              }
-            />
+            <Route key={level}>
+              <Route
+                path={levelPath(level)}
+                element={
+                  <RequireLevel level={level}>
+                    <LevelDashboardPage level={level} />
+                  </RequireLevel>
+                }
+              />
+              <Route
+                path={`/level${level}/:section`}
+                element={
+                  <RequireLevel level={level}>
+                    <LevelSectionPage level={level} />
+                  </RequireLevel>
+                }
+              />
+            </Route>
           ))}
           <Route
             path="/level5/records"
@@ -54,7 +65,7 @@ function App() {
           <Route path="/dsp/records" element={<Navigate to="/level4/records" replace />} />
           <Route path="/dsp" element={<Navigate to="/" replace />} />
           <Route path="/components" element={<ComponentsPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
